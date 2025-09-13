@@ -15,35 +15,58 @@ def winner(board, p):
     return any(board[a] == board[b] == board[c] == p for a,b,c in win)
 
 
+
+def draw(board):
+    # সব ঘর পূর্ণ হলেও ড্র হবে না, বরং র‍্যান্ডমভাবে একটি ঘর খালি করে দেবে
+    if " " not in board:
+        import random
+        idx = random.randint(0, 8)
+        board[idx] = " "
+        print(f"Randomly cell {idx+1} খালি করা হলো!")
+        return False  # ড্র হবে না
+    return False  # ড্র না হলে False
+
+
 def move(board, p):
     while True:
         m = int(input(f"player {p}, choose (1-9):  ")) - 1
-
         if board[m] == " ":
             board[m] = p
-            break
-        print("spot taken, try again ")
-
-
-def draw(board):
-    return " " not in board
+            break;
+        print(" try again ")
 
 
 def play():
-    board, player = [" "]*9, "X"
+    board , player = [" "]*9, "X"
     while True:
-
         display(board)
         move(board, player)
-        if winner(board, player):
+        if winner(board,player):
             display(board)
+            print(f" player {player} wins the game")
             break
 
         if draw(board):
             display(board)
-            print("game is a draw")
+            print(" game is draw")
             break
-        player = "L" if player == "X" else "X"
+
+
+        player = "O" if player == "X" else "X"
 
 play()
 
+
+
+
+def draw(board):
+    # সব ঘর পূর্ণ হলেও ড্র হবে না, বরং র‍্যান্ডমভাবে একটি ঘর খালি করে দেবে
+    if " " not in board:
+        import random
+        idx = random.randint(0, 8)
+        board[idx] = " "
+        print(f"Randomly cell {idx+1} খালি করা হলো!")
+        return False  # ড্র হবে না
+    return False  # ড্র না হলে False
+
+# ...existing code...

@@ -176,6 +176,7 @@ visited array দিয়ে চিহ্নিত করা হয়, কোন ক
 
 ---
 
-
+---# হলো preprocessor directive এর চিহ্ন।
+মানে, এটা compiler এর আগে একটা preprocessor কে নির্দেশ দেয় কী করতে হবে
 
 **শুভ প্রস্তুতি!**

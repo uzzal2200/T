@@ -1,141 +1,73 @@
 #include<bits/stdc++.h>
 using namespace std;
-int n =4;
-int tsp_g [4][4] = {
-    {10,12,13,15},
-    {11,17,19,20},
-    {9,7,20,25},
-    {6,99,33,5}
-
-
-};
-int visited[4], cost = 0;
-void tsp(int c)
+int total_solution = 0;
+void print(int q_position[], int n)
 {
-    visited[c] = 1;
-     cout << c+1 << " ";
+    cout<<"\nsolution"<<++total_solution<<":\n";
 
-    int minc = 1000, next=-1;
-    for(int k=0;k<n;k++)
+    // Loop through each row of the chessboard
+    for(int row=0;row<n;row++)
     {
-        if(!visited[k] && tsp_g[c][k] < minc)
+        // Loop through each column of the chessboard
+        for(int col=0;col<n;col++)
         {
-            minc = tsp_g[c][k];
-            next = k;
+            // Print 'Q' if there's a queen in this position, else print '.'
+            if(q_position[row] == col)
+            {
+                cout<<"Q ";
+            }
+            else
+            {
+                cout<<". ";
+            }
+        }
+        cout<<endl;
+    }
+}
+bool is_safe(int q_position[], int c_row, int c_col)
+{
+    for(int p_row=0;p_row<c_row;p_row++)
+    {
+        if(q_position[p_row] == c_col || abs(q_position[p_row] - c_col) == abs(p_row - c_row))
+        {
+            return false;
+
         }
     }
-
-    if(next == -1)
+    return true;
+}
+void place_q(int q_position[], int c_row, int n)
+{
+    if(c_row==n)
     {
-        cout<<" 1 ";
-        cost += tsp_g[c][0];
+        print(q_position,n);
         return;
-
     }
+    for(int c_col = 0; c_col<n; c_col++)
+    {
+        if(is_safe(q_position, c_row, c_col))
+        {
+          q_position[c_row] = c_col;
 
-    cost += minc;
-    tsp(next);
+          place_q(q_position, c_row+1, n);
+
+        }
+    }
 
 }
 int main()
 {
 
-       cout<<"paht: ";
-       tsp(0);
-       cout<<"total cost "<<cost<<endl;
+       int n;
+    cout<<"Enter the queen: ";  // Prompt user for the size of the board
+
+    cin>>n;  // Read the number of queens and the size of the board
+    int q_position[n];  // Array to store the column position of queens in each row
+    place_q(q_position, 0, n);  // Start placing queens from row 0
+
+    // If no solution is found, display this message
+    if (total_solution == 0)
+        cout << "No solution exists for N = " << n << endl;
 
     return 0;
-}# Lab Exam Preparation: AI & Robotics
-
-এখানে তোমার দেওয়া ফাইল ও টপিক থেকে সম্ভাব্য প্রশ্ন এবং তাদের উত্তর বাংলায় দেওয়া হলো।
-
----
-
-## ১. Artifical Intelligence (AI) কী?
-**উত্তর:**
-আর্টিফিশিয়াল ইন্টেলিজেন্স (AI) হলো কম্পিউটার বা মেশিনকে এমনভাবে তৈরি করা, যাতে তারা মানুষের মতো চিন্তা করতে, শিখতে, সিদ্ধান্ত নিতে এবং সমস্যা সমাধান করতে পারে। উদাহরণ: গুগল সার্চ, ভয়েস অ্যাসিস্ট্যান্ট, গেম খেলা ইত্যাদি।
-
----
-
-## ২. Machine Learning (ML) কী?
-**উত্তর:**
-মেশিন লার্নিং (ML) হলো AI-এর একটি শাখা, যেখানে কম্পিউটারকে ডেটা থেকে নিজে নিজে শিখতে দেওয়া হয়, যেনো সে ভবিষ্যতে নতুন ডেটা দেখে সিদ্ধান্ত নিতে পারে। এখানে এক্সপ্লিসিটলি কোডিং না করে, ডেটা ও অ্যালগরিদম দিয়ে শেখানো হয়।
-
----
-
-## ৩. Linear Regression কী?
-**উত্তর:**
-লিনিয়ার রিগ্রেশন হলো একটি সহজ মেশিন লার্নিং টেকনিক, যেখানে দুটি ভেরিয়েবলের (X ও Y) মধ্যে সরলরেখার সম্পর্ক বের করা হয়।
-উদাহরণ: পড়ার সময় (X) ও পরীক্ষার নম্বর (Y) — X বাড়লে Y কীভাবে বাড়ে, সেটা বোঝা যায়।
-এটি ভবিষ্যতে X-এর মান দিলে Y-এর মান অনুমান করতে সাহায্য করে।
-
----
-
-## ৪. Travelling Salesman Problem (TSP) কী?
-**উত্তর:**
-TSP হলো একটি ক্লাসিক্যাল সমস্যা, যেখানে একজন সেলসম্যানকে কিছু শহর ঘুরে আবার শুরুতে ফিরতে হবে, এবং সব শহর একবার করে ঘুরতে হবে।
-লক্ষ্য: মোট খরচ/দূরত্ব যেন সবচেয়ে কম হয়।
-এটি কম্বিনেটোরিয়াল অপ্টিমাইজেশন সমস্যা, এবং AI/অ্যালগরিদমে খুব গুরুত্বপূর্ণ।
-
----
-
-## ৫. N-Queen Problem কী?
-**উত্তর:**
-N-Queen সমস্যা হলো, N×N চেস বোর্ডে এমনভাবে Nটি কুইন বসাতে হবে, যাতে কোনো কুইন একে অপরকে আক্রমণ করতে না পারে (মানে, কোনো কুইন একই সারি, কলাম বা ডায়াগোনালে না থাকে)।
-এটি ব্যাকট্র্যাকিং অ্যালগরিদমের জনপ্রিয় উদাহরণ।
-
----
-
-## ৬. ফাইল থেকে সম্ভাব্য প্রশ্ন ও উত্তর
-
-### (ক) Tic-Tac-Toe (Python)
-- কিভাবে বোর্ড ডিসপ্লে করবে?
-- কিভাবে জয়ী নির্ধারণ করবে?
-- কিভাবে ড্র চেক করবে?
-- কিভাবে প্লেয়ার পালা করে চাল দেবে?
-
-### (খ) Tower of Hanoi (C++)
-- রিকার্শন কীভাবে কাজ করে?
-- Base case ও Recursive case কী?
-- ৩টা ডিস্কের জন্য ধাপে ধাপে মুভ দেখাও।
-
-### (গ) Travelling Salesman Problem (C++)
-- Nearest neighbor heuristic কী?
-- Brute force ও heuristic-এর পার্থক্য কী?
-- কিভাবে ভিজিটেড সিটি ট্র্যাক করা হয়?
-- কোডে কিভাবে মিনিমাম কস্ট বের করে?
-
-### (ঘ) Linear Regression (Python)
-- কিভাবে ডেটা ট্রেন-টেস্ট স্প্লিট করা হয়?
-- মডেল ফিট ও প্রেডিকশন কীভাবে হয়?
-- গ্রাফে রিগ্রেশন লাইন আঁকা হয় কীভাবে?
-- কেন x-কে reshape করতে হয়?
-
-### (ঙ) N-Queen (তুমি চাইলে কোড দিতে পারো)
-- ব্যাকট্র্যাকিং কী?
-- কিভাবে বোর্ডে কুইন বসানো হয়?
-- কিভাবে কুইন কনফ্লিক্ট চেক করা হয়?
-
----
-
-## ৭. আরও সম্ভাব্য প্রশ্ন
-
-- AI ও ML-এর মধ্যে পার্থক্য কী?
-- রিকার্শন ও ইটারেশন-এর পার্থক্য কী?
-- ব্যাকট্র্যাকিং কী এবং কোথায় ব্যবহার হয়?
-- TSP-এর জন্য কোন কোন অ্যালগরিদম আছে?
-- লিনিয়ার রিগ্রেশনে কোন লাইব্রেরি ব্যবহার হয়?
-- Python-এ কিভাবে গ্রাফ আঁকা হয়?
-
----
-
-## ৮. সংক্ষেপে প্রস্তুতি
-
-- প্রতিটি সমস্যার কোড ও লজিক ভালোভাবে বোঝো।
-- প্রতিটি টপিকের সংজ্ঞা ও উদাহরণ মুখস্থ রাখো।
-- কোডের প্রতিটি ধাপ নিজে লিখে প্র্যাকটিস করো।
-- গ্রাফ, ইনপুট-আউটপুট, ও ব্যাখ্যা দিতে পারো এমন প্রস্তুতি নাও।
-
----
-
-**শুভ কামনা!**
+}
